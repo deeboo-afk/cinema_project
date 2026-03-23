@@ -1,0 +1,25 @@
+.page_container{
+    padding: 24px;
+    min-height: 100vh;
+    color: #eee;
+}
+
+.bar-at-the-top{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.page-title{
+    margin:0;
+}
+
+.top-actions{
+    position: absolute;
+    right: 0;
+    display: flex;
+    gap: 10px;
+}
+

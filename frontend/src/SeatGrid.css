@@ -1,0 +1,94 @@
+/* Help by ChatGPT was taken here to the showcase the seats the way I had imagined. */
+
+
+.cinema-container {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+  
+  
+}
+
+.screen {
+  width: calc(100% - 42px);
+  margin-left: 42px;
+  height: 40px;
+  border: 4px solid #ddd;
+  border-bottom: none;
+  border-radius: 12px 12px 0 0;
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: bold;
+  color: #aaa;
+  letter-spacing: 2px;
+  padding-top: 8px;
+  box-sizing: border-box;
+}
+
+
+.seat-grid {
+  display: grid;
+  gap: 18px;
+  padding: 20px;
+  background: #111;
+  border-radius: 18px;
+}
+
+.seat-row {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  align-items: center;
+  
+  gap: 12px;
+}
+
+.row-label {
+  color: #aaa;
+  font-weight: bold;
+  text-align: right;
+}
+
+.row-cells {
+  display: grid;
+  gap: 12px;
+  align-items: center;
+  
+}
+
+.seat-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #666;
+  margin: auto;
+}
+
+.seat {
+  width: 50px;
+  height: 35px;
+  border-radius: 999px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.15s ease;
+}
+
+.seat.available {
+  background: #ffffff;
+  color: white;
+}
+
+.seat.selected {
+  background: rgb(141, 141, 141);
+  color: black;
+
+}
+.seat.occupied {
+    background: #ff4c4c;
+    color: white;
+    
+  }
+  
+.seat:hover {
+  opacity: 0.85;
+}
