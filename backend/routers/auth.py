@@ -25,7 +25,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login/auth")
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     credentials_exception = HTTPException(
     status_code=status.HTTP_401_UNAUTHORIZED,
-    detail="Could not validate credentials",
+    detail="Could not validate credentials, Try to login again or create an account to be able to book tickets.",
     headers={"WWW-Authenticate": "Bearer"},
     )
     

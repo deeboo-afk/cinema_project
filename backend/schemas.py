@@ -62,6 +62,11 @@ class BookingOut(BaseModel):
     class Config:
         from_attributes = True
 
+class MyBookingOut(BaseModel):
+    id: int
+    movie_title: str
+    showtime_time: str
+    seat: str
 
 class SalonOut(BaseModel):
     id: int

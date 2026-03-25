@@ -6,7 +6,7 @@ from models import Showtime, Seat, Booking, User
 from sqlalchemy.exc import IntegrityError
 from routers.auth import get_current_user
 
-from schemas import BookingCreate
+from schemas import BookingCreate, MyBookingOut
 
 #inspiration of creating routes coming from this article: https://medium.com/@thevintagecoder/how-to-build-a-beginner-friendly-movie-booking-system-with-fastapi-3ccf283e1f47
 
@@ -71,12 +71,35 @@ def create_booking(data: BookingCreate, current_user: User = Depends(get_current
         raise HTTPException(Status_code=500,detail="Something went wrong." )
     
 
-@router.get("/bookings/me")
+@router.get("/bookings/me", response_model=list[MyBookingOut])
 def get_my_bookings(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
 
         bookings = db.execute(select(Booking).where(Booking.user_id == current_user.id)).scalars().all()
 
-        if not bookings:
-            raise HTTPException(status_code=404, detail="No bookings made.")
+        result = []
+
+        for b in bookings:
+            result.append({
+                "id": b.id,
+                "movie_title": b.showtime.movie.title,
+                "showtime_time": str(b.showtime.start_time),
+                "seat": f"{b.seat.row}-{b.seat.number}"
+            })
         
-        return bookings
+        return result
+
+@router.delete("/bookings/{booking_id}")
+def cancel_booking(booking_id: int, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+
+        booking = db.get(Booking, booking_id)
+
+        if not booking:
+            raise HTTPException(status_code=404, detail="Booking not found")
+        
+        if booking.user_id != current_user.id:
+            raise HTTPException(status_code=403, detail="Not allowed to delete this booking")
+        
+        db.delete(booking)
+        db.commit()
+
+        return {"message": "Booking cancelled"}

@@ -35,7 +35,7 @@ class User(Base):
     #always store password as a hash in the database
     password_hash: Mapped[str] = mapped_column(String, nullable=False)
 
-    #determines user permissions
+   
     role: Mapped[str] = mapped_column(String, nullable=False, default="user")
 
 class Seat(Base):
