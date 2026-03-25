@@ -6,6 +6,7 @@ import AdminPage from "./AdminPage";
 import LoginPage from "./LoginPage";
 import BookedPage from "./BookedPage";
 import CreateAccount from "./CreateAccountPage";
+import MyBookings from "./MyBookings";
 
 //Main Application component, handles all frontend routing using React Router
 //For examples, first route path points to the homepage, which shows all the availabe movies.
@@ -19,6 +20,7 @@ export default function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/booked" element={<BookedPage />} />
       <Route path="/register" element={<CreateAccount />} />
+      <Route path="/mybookings" element={<MyBookings/>} />
     
     </Routes>
   );

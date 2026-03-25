@@ -24,9 +24,10 @@ export default function LoginPage() {
             }
             const data = await res.json();
             localStorage.setItem("role", data.role);
-            localStorage.setItem("User_id", data.id);
+            localStorage.setItem("token", data.access_token);
             localStorage.setItem("username", data.username);
             navigate("/");
+
         } catch (err) {
             setError("Wrong username or password");
         }

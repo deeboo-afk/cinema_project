@@ -2,8 +2,9 @@ from fastapi import HTTPException, Depends, APIRouter
 from db import get_db
 from sqlalchemy.orm import Session
 from sqlalchemy import select
-from models import Showtime, Seat, Booking
+from models import Showtime, Seat, Booking, User
 from sqlalchemy.exc import IntegrityError
+from routers.auth import get_current_user
 
 from schemas import BookingCreate
 
@@ -14,7 +15,7 @@ router = APIRouter()
 
 #function for booking a movie
 @router.post("/bookings")
-def create_booking(data: BookingCreate, db: Session = Depends(get_db)):
+def create_booking(data: BookingCreate, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     showtime = db.get(Showtime, data.showtime_id)
     if not showtime:
         raise HTTPException(status_code=404, detail="Showtime not found")
@@ -52,7 +53,7 @@ def create_booking(data: BookingCreate, db: Session = Depends(get_db)):
             if existing:
                 raise HTTPException(status_code=400, detail=f"Seat already booked: {seat_key}")
 
-            booking = Booking(showtime_id=data.showtime_id, seat_id=seat.id, user_id=data.user_id)
+            booking = Booking(showtime_id=data.showtime_id, seat_id=seat.id, user_id=current_user.id)
             db.add(booking)
             created.append(seat_key)
 
@@ -67,4 +68,15 @@ def create_booking(data: BookingCreate, db: Session = Depends(get_db)):
     #Catches every other error outside the unique constraints error.
     except Exception:
         db.rollback()
-        raise
+        raise HTTPException(Status_code=500,detail="Something went wrong." )
+    
+
+@router.get("/bookings/me")
+def get_my_bookings(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+
+        bookings = db.execute(select(Booking).where(Booking.user_id == current_user.id)).scalars().all()
+
+        if not bookings:
+            raise HTTPException(status_code=404, detail="No bookings made.")
+        
+        return bookings

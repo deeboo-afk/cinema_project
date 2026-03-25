@@ -2,6 +2,9 @@ from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel, EmailStr
 
+class Token(BaseModel):
+    access_token: str
+    token_type: str
 
 class ShowtimeOut(BaseModel):
     id: int
@@ -31,6 +34,12 @@ class UserOut(BaseModel):
     class Config:
         from_attributes = True
 
+class LoginResponse(BaseModel):
+    access_token: str
+    token_type: str
+    role: str
+    username: str
+
 class MovieOut(BaseModel):
     id: int
     title: str
@@ -43,7 +52,15 @@ class MovieOut(BaseModel):
 class BookingCreate(BaseModel):
     showtime_id: int
     seats: list[str]  # Format: "A-5" for row A, seat 5
-    user_id: int | None = None
+    
+
+class BookingOut(BaseModel):
+    id: int
+    movie_title: str
+    showtime: str
+
+    class Config:
+        from_attributes = True
 
 
 class SalonOut(BaseModel):

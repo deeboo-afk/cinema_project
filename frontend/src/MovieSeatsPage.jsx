@@ -14,6 +14,8 @@ export default function MovieSeatsPage() {
   const [occupiedSeats, setOccupiedSeats] = useState(new Set());
   const [movie, setMovie] = useState(null);
   const [error, setError] = useState(null);
+
+  
    
 
   useEffect(() => {
@@ -87,7 +89,8 @@ export default function MovieSeatsPage() {
   }
 
   async function handleBooking() {
-    const userId = localStorage.getItem("user_id");
+    const token = localStorage.getItem("token");
+    
     try {
       setError(null);
       const selectedSeats = Array.from(selected);
@@ -96,11 +99,11 @@ export default function MovieSeatsPage() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           showtime_id: Number(activeShowtimeId),
           seats: selectedSeats,
-          user_id:userId ? Number(userId) : null,
         }),
       });
 

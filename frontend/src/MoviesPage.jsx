@@ -6,8 +6,10 @@ import "./MovieGrid.css";
 export default function MoviesPage() {
   const [movies, setMovies] = useState([]);
   const role = localStorage.getItem("role");
-  const isAdmin = role === "admin";
-  const isMember = role === "user";
+  const token = localStorage.getItem("token");
+
+  const isAdmin = token && role === "admin";
+  const isMember = token && role === "user";
   const isLoggedIn = isAdmin || isMember;
 
   
@@ -58,7 +60,7 @@ export default function MoviesPage() {
           {isMember && (
 
             <Link
-            to="/mybookingspage"
+            to="/MyBookings"
             style={{
               background: "#ffffff",
               color: "#000000",
@@ -78,6 +80,8 @@ export default function MoviesPage() {
             <button
               onClick={() => {
                 localStorage.removeItem("role");
+                localStorage.removeItem("token");
+                localStorage.removeItem("username");
                 window.location.reload();
               }}
               style={{
@@ -166,6 +170,9 @@ export default function MoviesPage() {
           try {
             const res = await fetch(`/api/movies/${m.id}`, {
               method: "DELETE",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              }
             });
 
             if (!res.ok) {
