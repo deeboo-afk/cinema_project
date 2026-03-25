@@ -87,7 +87,19 @@ return(
             <p>Choose a booking you would like to <strong>Cancel</strong> in the form below</p>    
             
             <div className="top-actions">
-                <Link to="/">Back to Movies</Link>  
+                <Link 
+                to="/"
+                style={{
+                    background: "#ffffff",
+                    color: "#000000",
+                    padding: "8px 16px",
+                    borderRadius: "10px",
+                    textDecoration: "none",
+                    fontWeight: "bold"
+                }}
+                    >
+                    Back to Movies
+                </Link>  
             </div>
             
             <div style= {{marginTop: "20px"}}>
